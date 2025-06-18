@@ -77,7 +77,11 @@ A production-ready, modular AI e-commerce platform featuring advanced machine le
 
 - **Package Management**: pip, requirements.txt
 - **Version Control**: Git
-- **Documentation**: Markdown
+- **Documentation**: Markdown, comprehensive docs in `/docs`
+- **Containerization**: Docker, Docker Compose
+- **Deployment**: Heroku (Procfile), Docker
+- **Environment Management**: Virtual environment, setup scripts
+- **Logging**: Centralized logging configuration in `/utils`
 
 ## 📦 Installation
 
@@ -93,7 +97,7 @@ A production-ready, modular AI e-commerce platform featuring advanced machine le
 
    ```bash
    git clone <repository-url>
-   cd ds_task_1ab
+   cd ManaKnight-AI-ECommerce-Recommendation-System
    ```
 
 2. **Create a virtual environment**
@@ -124,18 +128,34 @@ A production-ready, modular AI e-commerce platform featuring advanced machine le
    FLASK_DEBUG=True
    ```
 
-5. **Initialize the database**
+5. **Initialize the database and environment**
 
    ```bash
-   python -c "from services.database import init_db; init_db()"
+   python setup_environment.py
    ```
 
-6. **Run the application**
+6. **Create sample data (optional)**
+
+   ```bash
+   python create_sample_data.py
+   ```
+
+7. **Run the application**
    ```bash
    python app.py
    ```
 
 The application will be available at `http://localhost:5000`
+
+## 📚 Documentation
+
+### Additional Documentation Files
+
+- **CONTRIBUTING.md** - Guidelines for contributing to the project
+- **DEMO_SCRIPT.md** - Comprehensive demo script for presentations
+- **IMPROVEMENTS_SUMMARY.md** - Summary of project improvements and enhancements
+- **docs/model_architecture.md** - Detailed model architecture documentation
+- **LICENSE** - MIT License terms and conditions
 
 ## 📚 API Documentation
 
@@ -230,44 +250,91 @@ Returns a sample HTML response showing the expected output format.
 ## 📁 Project Structure
 
 ```
-ds_task_1ab/
-├── app.py                 # Main Flask application
-├── requirements.txt       # Python dependencies
-├── README.md             # Project documentation
-├── .env                  # Environment variables (create this)
-├── data/                 # Data storage
-│   └── dataset.zip       # E-commerce dataset
-├── services/             # Backend services
+ManaKnight-AI-ECommerce-Recommendation-System/
+├── app.py                          # Main Flask application
+├── config.py                       # Configuration management
+├── requirements.txt                # Python dependencies
+├── README.md                       # Project documentation
+├── setup_environment.py            # Environment setup script
+├── create_sample_data.py           # Sample data creation
+├── test_integration.py             # Integration testing
+├── Dockerfile                      # Docker configuration
+├── docker-compose.yml              # Docker Compose setup
+├── Procfile                        # Heroku deployment
+├── LICENSE                         # MIT License
+├── CONTRIBUTING.md                 # Contribution guidelines
+├── DEMO_SCRIPT.md                  # Demo script documentation
+├── IMPROVEMENTS_SUMMARY.md         # Project improvements summary
+├── .env                           # Environment variables (create this)
+├── data/                          # Data storage
+│   ├── dataset/                   # Dataset files
+│   │   ├── dataset.csv           # Main e-commerce dataset
+│   │   └── CNN_Model_Train_Data.csv # CNN training data
+│   ├── ecommerce.db              # SQLite database
+│   └── scraped_images/           # Web scraped product images
+├── services/                      # Backend services
 │   ├── __init__.py
-│   ├── database.py       # Database operations
-│   ├── recommendation.py # Recommendation engine
-│   ├── ocr_service.py    # OCR functionality
-│   ├── cnn_model.py      # CNN model for image detection
-│   ├── enhanced_cnn_model.py # Enhanced CNN model service
-│   ├── vector_db.py      # Vector database operations
-│   ├── cache_service.py  # Caching layer service
-│   ├── performance_monitor.py # Performance monitoring
-│   ├── data_cleaning.py  # Data cleaning utilities
-│   └── scraper.py        # Web scraping utilities
-├── models/               # Trained models
-│   └── cnn_product_classifier.h5
-├── templates/            # HTML templates
-│   ├── sample_response.html
-│   ├── text_query.html
-│   ├── image_query.html
-│   └── product_upload.html
-├── static/               # Static files (CSS, JS, images)
-│   ├── css/
-│   ├── js/
-│   └── images/
-├── notebooks/            # Jupyter notebooks for development
-│   ├── data_cleaning.ipynb
-│   ├── model_training.ipynb
-│   └── vector_database_setup.ipynb
-└── tests/                # Unit tests
-    ├── test_api.py
-    ├── test_services.py
-    └── test_models.py
+│   ├── database.py               # Database operations
+│   ├── recommendation.py         # Recommendation engine
+│   ├── ocr_service.py           # OCR functionality
+│   ├── cnn_model.py             # CNN model for image detection
+│   ├── enhanced_cnn_model.py    # Enhanced CNN model service
+│   ├── vector_db.py             # Vector database operations
+│   ├── cache_service.py         # Caching layer service
+│   ├── performance_monitor.py   # Performance monitoring
+│   ├── data_cleaning.py         # Data cleaning utilities
+│   ├── scraper.py               # Web scraping utilities
+│   ├── api_services/            # API service modules
+│   │   └── __init__.py
+│   ├── data_processing/         # Data processing modules
+│   │   ├── __init__.py
+│   │   └── preprocessing_pipeline.py
+│   └── ml_models/               # Machine learning models
+│       ├── __init__.py
+│       ├── base_model.py        # Base model interface
+│       ├── cnn_classifier.py    # CNN classifier implementation
+│       ├── evaluation_framework.py # Model evaluation framework
+│       └── benchmarking_suite.py   # Performance benchmarking
+├── models/                        # Trained models
+│   ├── cnn_product_classifier.h5  # Main CNN model
+│   ├── product_classifier.h5      # Alternative classifier
+│   ├── product_vectors.pkl        # Vectorized product data
+│   └── model_info.txt            # Model metadata
+├── templates/                     # HTML templates
+│   ├── index.html                # Main landing page
+│   ├── sample_response.html      # Sample response template
+│   ├── text_query.html          # Text query interface
+│   ├── image_query.html         # Image query interface
+│   └── product_upload.html      # Product upload interface
+├── static/                       # Static files (CSS, JS, images)
+│   ├── css/                     # Stylesheets
+│   │   ├── style.css           # Main stylesheet
+│   │   └── manaknight.css      # ManaKnight branding styles
+│   ├── js/                     # JavaScript files
+│   │   ├── main.js             # Main JavaScript
+│   │   ├── text-query.js       # Text query functionality
+│   │   ├── image-query.js      # Image query functionality
+│   │   └── product-upload.js   # Product upload functionality
+│   ├── images/                 # Static images
+│   │   └── products/           # Product images
+│   └── uploads/                # User uploaded files
+├── notebooks/                    # Jupyter notebooks for development
+│   ├── data_cleaning.ipynb      # Data cleaning notebook
+│   ├── model_training.ipynb     # Model training notebook
+│   ├── vector_database_setup.ipynb # Vector DB setup
+│   └── comprehensive_model_evaluation.ipynb # Model evaluation
+├── tests/                       # Unit tests
+│   ├── test_api.py             # API endpoint tests
+│   ├── test_services.py        # Service layer tests
+│   ├── test_models.py          # Model functionality tests
+│   └── test_complete_system.py # Complete system tests
+├── utils/                      # Utility modules
+│   └── logging_config.py       # Logging configuration
+├── docs/                       # Documentation
+│   └── model_architecture.md   # Model architecture documentation
+├── logs/                       # Application logs
+│   └── app.log                # Main application log
+└── venv/                      # Virtual environment (local)
 ```
 
 ## 🎯 Usage Examples
@@ -478,6 +545,12 @@ python -m pytest tests/test_api.py
 
 # Run with coverage
 python -m pytest --cov=services tests/
+
+# Run integration tests
+python test_integration.py
+
+# Run complete system tests
+python -m pytest tests/test_complete_system.py -v
 ```
 
 ### Test Structure
@@ -485,6 +558,8 @@ python -m pytest --cov=services tests/
 - `tests/test_api.py` - API endpoint tests
 - `tests/test_services.py` - Service layer tests
 - `tests/test_models.py` - Model functionality tests
+- `tests/test_complete_system.py` - Complete system integration tests
+- `test_integration.py` - Main integration testing script
 
 ## 🚀 Deployment
 
@@ -502,9 +577,15 @@ python app.py
 pip install gunicorn
 gunicorn -w 4 -b 0.0.0.0:8000 app:app
 
-# Using Docker (create Dockerfile first)
-docker build -t ecommerce-recommendation .
-docker run -p 8000:8000 ecommerce-recommendation
+# Using Docker
+docker build -t manaknight-ecommerce-recommendation .
+docker run -p 8000:8000 manaknight-ecommerce-recommendation
+
+# Using Docker Compose
+docker-compose up -d
+
+# Deploy to Heroku
+git push heroku main
 ```
 
 ### Environment Variables for Production
@@ -534,6 +615,16 @@ DATABASE_URL=your_database_url
 - Error rates and exceptions
 
 ## 🔧 Configuration
+
+### Configuration Management
+
+The project uses a centralized configuration system via `config.py` that manages:
+
+- Environment-specific settings (development, production, testing)
+- Database configurations
+- API keys and secrets
+- Model parameters
+- Logging levels
 
 ### Pinecone Setup
 
@@ -646,7 +737,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   - _ACID Properties_: Ensure that database transactions are Atomic, Consistent, Isolated, and Durable to maintain data integrity and reliability.
   - _Modularity_: Build the codebase with clear modularity in mind. Separate different functionalities into distinct modules to enhance readability and maintainability.
 - _Packaging_: Organize your code into packages that reflect the services they provide. This approach not only helps in maintaining the code but also simplifies the deployment and scaling process.
-- Directories: Whenever you will test on notebook make sure you keep all the notebooks in `notebook` directory and use proper naming for the notebooks.
+- Directories: All notebooks are organized in the `notebooks/` directory with proper naming conventions:
+  - `data_cleaning.ipynb` - Data preprocessing and cleaning
+  - `model_training.ipynb` - CNN model training and validation
+  - `vector_database_setup.ipynb` - Vector database initialization
+  - `comprehensive_model_evaluation.ipynb` - Complete model evaluation and metrics
 
 ### Tech Stack
 
