@@ -195,7 +195,11 @@ Our CNN model has achieved **production-ready performance** through advanced fea
 - **Confusion Matrix**: `static/images/evaluation/confusion_matrix.png`
 - **Performance Charts**: `static/images/evaluation/performance_metrics.png`
 - **Detailed Reports**: `data/evaluation_results/` (JSON and Markdown formats)
-- **Demo Scripts**: `demo_improved_results.py` for live demonstration
+- **Demo Scripts**:
+  - `demo_improved_results.py` - Live model performance demonstration
+  - `demo_evaluation_results.py` - Evaluation results demonstration
+  - `run_model_evaluation.py` - Comprehensive evaluation runner
+- **Evaluation Summary**: `MODEL_EVALUATION_SUMMARY.md` - Complete evaluation analysis
 
 ### **🎯 Run Model Evaluation**
 
@@ -203,8 +207,17 @@ Our CNN model has achieved **production-ready performance** through advanced fea
 # View current model performance
 python demo_improved_results.py
 
+# View evaluation results demonstration
+python demo_evaluation_results.py
+
 # Run comprehensive evaluation
 python run_model_evaluation.py
+
+# Run quick model improvements
+python quick_model_improvement.py
+
+# Run improved model evaluation
+python improved_model_evaluation.py
 
 # Run integration tests
 python test_integration.py
@@ -217,6 +230,7 @@ python test_integration.py
 - **CONTRIBUTING.md** - Guidelines for contributing to the project
 - **DEMO_SCRIPT.md** - Comprehensive demo script for presentations
 - **IMPROVEMENTS_SUMMARY.md** - Summary of project improvements and enhancements
+- **MODEL_EVALUATION_SUMMARY.md** - Detailed model evaluation results and analysis
 - **docs/model_architecture.md** - Detailed model architecture documentation
 - **LICENSE** - MIT License terms and conditions
 
@@ -237,12 +251,7 @@ http://localhost:5000
 Process natural language queries and return product recommendations.
 
 **Request:**
-
-```json
-{
-  "query": "I need wireless headphones for gaming"
-}
-```
+- Form data with `query` field containing the search query
 
 **Response:**
 
@@ -258,7 +267,10 @@ Process natural language queries and return product recommendations.
     }
   ],
   "response": "I found excellent gaming headphones that match your requirements...",
-  "query_processed": "wireless headphones gaming"
+  "query_processed": "wireless headphones gaming",
+  "total_results": 1,
+  "processing_time": "0.187s",
+  "status": "success"
 }
 ```
 
@@ -269,7 +281,6 @@ Process natural language queries and return product recommendations.
 Extract text from handwritten images and process as product queries.
 
 **Request:**
-
 - Form data with `image_data` file upload
 
 **Response:**
@@ -279,7 +290,10 @@ Extract text from handwritten images and process as product queries.
   "products": [...],
   "response": "Based on your handwritten query...",
   "extracted_text": "wireless mouse for office work",
-  "confidence": 0.87
+  "confidence": 0.87,
+  "total_results": 3,
+  "processing_time": "1.234s",
+  "status": "success"
 }
 ```
 
@@ -290,7 +304,6 @@ Extract text from handwritten images and process as product queries.
 Identify products from uploaded images using CNN model.
 
 **Request:**
-
 - Form data with `product_image` file upload
 
 **Response:**
@@ -300,15 +313,106 @@ Identify products from uploaded images using CNN model.
   "products": [...],
   "response": "I identified this as a smartphone...",
   "detected_class": "smartphone",
-  "confidence": 0.92
+  "confidence": 0.92,
+  "total_results": 5,
+  "processing_time": "0.456s",
+  "status": "success"
 }
 ```
 
-#### 4. Sample Response
+#### 4. Base64 Image Upload
+
+**POST** `/upload`
+
+Handle base64 image uploads for visual classification.
+
+**Request:**
+
+```json
+{
+  "image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ..."
+}
+```
+
+**Response:**
+
+```json
+{
+  "products": [...],
+  "response": "Classification results...",
+  "detected_class": "electronics",
+  "confidence": 0.89,
+  "status": "success"
+}
+```
+
+#### 5. Test OCR Endpoint
+
+**POST** `/test-ocr`
+
+Test endpoint for manual OCR text input without image upload.
+
+**Request:**
+- Form data with `handwritten_text` field
+
+#### 6. Health Check
+
+**GET** `/health`
+
+Health check endpoint for monitoring system status.
+
+**Response:**
+
+```json
+{
+  "status": "healthy",
+  "services": {
+    "database": "OK",
+    "recommendation": "OK",
+    "ocr": "OK",
+    "cnn": "OK",
+    "vector_db": "OK"
+  },
+  "timestamp": "2024-01-01T12:00:00Z"
+}
+```
+
+#### 7. System Statistics
+
+**GET** `/api/stats`
+
+Get system statistics and service status.
+
+**Response:**
+
+```json
+{
+  "total_products": 1000,
+  "categories": 10,
+  "api_version": "1.0",
+  "uptime": "Running",
+  "services_status": {
+    "database": "OK",
+    "recommendation": "OK",
+    "ocr": "OK",
+    "cnn": "OK"
+  },
+  "timestamp": "2024-01-01T12:00:00Z"
+}
+```
+
+#### 8. Sample Response
 
 **GET** `/sample_response`
 
 Returns a sample HTML response showing the expected output format.
+
+#### 9. Frontend Pages
+
+**GET** `/` - Main landing page
+**GET** `/text-query` - Text query interface
+**GET** `/image-query` - Image query interface
+**GET** `/product-upload` - Product upload interface
 
 ## 📁 Project Structure
 
@@ -321,6 +425,11 @@ ManaKnight-AI-ECommerce-Recommendation-System/
 ├── setup_environment.py            # Environment setup script
 ├── create_sample_data.py           # Sample data creation
 ├── test_integration.py             # Integration testing
+├── demo_improved_results.py        # Model performance demonstration
+├── demo_evaluation_results.py      # Evaluation results demo
+├── improved_model_evaluation.py    # Model evaluation improvements
+├── quick_model_improvement.py      # Quick model enhancement script
+├── run_model_evaluation.py         # Comprehensive model evaluation
 ├── Dockerfile                      # Docker configuration
 ├── docker-compose.yml              # Docker Compose setup
 ├── Procfile                        # Heroku deployment
@@ -328,15 +437,20 @@ ManaKnight-AI-ECommerce-Recommendation-System/
 ├── CONTRIBUTING.md                 # Contribution guidelines
 ├── DEMO_SCRIPT.md                  # Demo script documentation
 ├── IMPROVEMENTS_SUMMARY.md         # Project improvements summary
+├── MODEL_EVALUATION_SUMMARY.md     # Model evaluation summary
 ├── .env                           # Environment variables (create this)
 ├── data/                          # Data storage
 │   ├── dataset/                   # Dataset files
 │   │   ├── dataset.csv           # Main e-commerce dataset
 │   │   └── CNN_Model_Train_Data.csv # CNN training data
+│   ├── evaluation_results/        # Model evaluation results
+│   │   ├── evaluation_metrics_*.json # Evaluation metrics (timestamped)
+│   │   ├── evaluation_report_*.md # Evaluation reports (timestamped)
+│   │   └── improved_*.* # Improved evaluation results
 │   ├── ecommerce.db              # SQLite database
 │   └── scraped_images/           # Web scraped product images
 ├── services/                      # Backend services
-│   ├── __init__.py
+│   ├── __init__.py               # Services package initialization
 │   ├── database.py               # Database operations
 │   ├── recommendation.py         # Recommendation engine
 │   ├── ocr_service.py           # OCR functionality
@@ -379,7 +493,8 @@ ManaKnight-AI-ECommerce-Recommendation-System/
 │   │   ├── image-query.js      # Image query functionality
 │   │   └── product-upload.js   # Product upload functionality
 │   ├── images/                 # Static images
-│   │   └── products/           # Product images
+│   │   ├── products/           # Product images
+│   │   └── evaluation/         # Model evaluation visualizations
 │   └── uploads/                # User uploaded files
 ├── notebooks/                    # Jupyter notebooks for development
 │   ├── data_cleaning.ipynb      # Data cleaning notebook
@@ -440,48 +555,54 @@ print(response.json())
 
 #### **Module 1: Data Preparation & Backend Setup**
 
-- [x] ✅ E-commerce dataset cleaning and preprocessing
-- [x] ✅ Vector database creation (Pinecone + local fallback)
-- [x] ✅ Similarity metrics implementation (cosine similarity)
-- [x] ✅ Product recommendation service with natural language processing
+- [x] ✅ E-commerce dataset cleaning and preprocessing (`data/dataset/`)
+- [x] ✅ Vector database creation (Pinecone + local fallback) (`services/vector_db.py`)
+- [x] ✅ Similarity metrics implementation (cosine similarity) (`services/recommendation.py`)
+- [x] ✅ Product recommendation service with natural language processing (`/product-recommendation`)
 
 #### **Module 2: OCR & Web Scraping**
 
-- [x] ✅ OCR functionality implementation (Tesseract integration)
-- [x] ✅ Web scraping for product images (automated collection)
-- [x] ✅ OCR-based query processing with confidence scoring
-- [x] ✅ Training dataset creation (CNN_Model_Train_Data.csv)
+- [x] ✅ OCR functionality implementation (Tesseract integration) (`services/ocr_service.py`)
+- [x] ✅ Web scraping for product images (automated collection) (`services/scraper.py`)
+- [x] ✅ OCR-based query processing with confidence scoring (`/ocr-query`)
+- [x] ✅ Training dataset creation (`data/dataset/CNN_Model_Train_Data.csv`)
 
 #### **Module 3: CNN Model Development**
 
-- [x] ✅ CNN model training (10-category classification)
-- [x] ✅ Image-based product detection with confidence scores
+- [x] ✅ CNN model training (10-category classification) (`services/enhanced_cnn_model.py`)
+- [x] ✅ Image-based product detection with confidence scores (`/image-product-search`)
 - [x] ✅ Model integration with vector database matching
-- [x] ✅ Trained model file (models/cnn_product_classifier.h5)
+- [x] ✅ Trained model files (`models/cnn_product_classifier.h5`, `models/product_classifier.h5`)
+- [x] ✅ Advanced model architecture with base classes (`services/ml_models/`)
 
 #### **Module 4: Frontend Development & Integration**
 
-- [x] ✅ Text query interface (beautiful, responsive design)
-- [x] ✅ Image query interface (OCR processing)
-- [x] ✅ Product image upload interface (CNN classification)
-- [x] ✅ Professional UI with Mana Knight Digital branding
+- [x] ✅ Text query interface (`templates/text_query.html`, `/text-query`)
+- [x] ✅ Image query interface (`templates/image_query.html`, `/image-query`)
+- [x] ✅ Product image upload interface (`templates/product_upload.html`, `/product-upload`)
+- [x] ✅ Professional UI with ManaKnight branding (`static/css/`, `templates/index.html`)
 
-### � **PRODUCTION ENHANCEMENTS ADDED**
+### 🚀 **PRODUCTION ENHANCEMENTS ADDED**
 
-- [x] ✅ Real-time performance monitoring
-- [x] ✅ Caching layer (Redis + memory fallback)
-- [x] ✅ Comprehensive unit tests (API, services, models)
-- [x] ✅ Error handling and security features
-- [x] ✅ API documentation and health checks
+- [x] ✅ Real-time performance monitoring (`services/performance_monitor.py`)
+- [x] ✅ Caching layer service (`services/cache_service.py`)
+- [x] ✅ Comprehensive unit tests (`tests/` directory)
+- [x] ✅ Error handling and security features (Flask app with CORS)
+- [x] ✅ API documentation and health checks (`/health`, `/api/stats`)
 - [x] ✅ System analytics and metrics collection
+- [x] ✅ Advanced model evaluation framework (`services/ml_models/evaluation_framework.py`)
+- [x] ✅ Model benchmarking suite (`services/ml_models/benchmarking_suite.py`)
+- [x] ✅ Centralized logging configuration (`utils/logging_config.py`)
 
 ### 🏆 **READY FEATURES**
 
-- [x] ✅ Live demonstration capabilities
-- [x] ✅ Performance metrics dashboard
-- [x] ✅ Professional documentation
-- [x] ✅ Scalable architecture design
-- [x] ✅ Production deployment ready
+- [x] ✅ Live demonstration capabilities (`demo_*.py` scripts)
+- [x] ✅ Performance metrics and evaluation (`MODEL_EVALUATION_SUMMARY.md`)
+- [x] ✅ Professional documentation (`docs/`, `IMPROVEMENTS_SUMMARY.md`)
+- [x] ✅ Scalable modular architecture (`services/ml_models/base_model.py`)
+- [x] ✅ Production deployment ready (Docker, Heroku support)
+- [x] ✅ Comprehensive evaluation artifacts (`data/evaluation_results/`)
+- [x] ✅ Interactive web interfaces (`templates/`, `static/`)
 
 # Project Overview
 
@@ -623,6 +744,9 @@ python -m pytest tests/test_complete_system.py -v
 - `tests/test_models.py` - Model functionality tests
 - `tests/test_complete_system.py` - Complete system integration tests
 - `test_integration.py` - Main integration testing script
+- `demo_improved_results.py` - Model performance demonstration
+- `demo_evaluation_results.py` - Evaluation results demonstration
+- `run_model_evaluation.py` - Comprehensive model evaluation script
 
 ## 🚀 Deployment
 
