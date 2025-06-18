@@ -1,0 +1,34 @@
+{
+  "timestamp": "2025-06-18 19:38:34",
+  "overall_metrics": {
+    "accuracy": 0.1,
+    "total_samples": 200,
+    "correct_predictions": 20,
+    "average_confidence": 0.11687555238604545,
+    "average_processing_time": 0.3004621696472168
+  },
+  "class_accuracy": {
+    "antique_car": 0.0,
+    "kitchen": 1.0,
+    "t-shirt": 0.0,
+    "computer": 0.0,
+    "teapot": 0.0,
+    "electronics": 0.0,
+    "clothing": 0.0,
+    "home_garden": 0.0,
+    "automotive": 0.0,
+    "office": 0.0
+  },
+  "class_names": [
+    "antique_car",
+    "kitchen",
+    "t-shirt",
+    "computer",
+    "teapot",
+    "electronics",
+    "clothing",
+    "home_garden",
+    "automotive",
+    "office"
+  ]
+}
