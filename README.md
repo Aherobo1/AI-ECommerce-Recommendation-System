@@ -1,4 +1,4 @@
-# 🚀 ManaKnight AI E-Commerce Recommendation System
+# 🚀 AI E-Commerce Recommendation System
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
 [![Flask](https://img.shields.io/badge/Flask-2.3+-green.svg)](https://flask.palletsprojects.com/)
